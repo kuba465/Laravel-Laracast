@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Post;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -20,6 +22,8 @@ class PostController extends Controller
     //If you want to use this model binding slug name MUST BE THE SAME as Post variable
     public function show(Post $post)
     {
+        //Carbon::setLocale('pl');
+
         return view('pages.show', compact('post'));
     }
 
@@ -57,4 +61,5 @@ class PostController extends Controller
 
         return redirect('/');
     }
+
 }
