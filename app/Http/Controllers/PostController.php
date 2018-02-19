@@ -20,8 +20,28 @@ class PostController extends Controller
         //but when post doesn't have this date it will show them from first to lastest
         //so if some post doesn't have a create date I need to sort then by id
 //        $posts = Post::orderBy('id', 'desc')->get();
-        $posts = Post::latest()->get();
-        return view('pages.main', compact('posts'));
+//        $posts = Post::latest();
+//
+//        if ($month = \request('month')) {
+//            $posts->whereMonth('created_at', Carbon::parse($month)->month);
+//        }
+//
+//        if ($year = \request('year')) {
+//            $posts->whereYear('created_at', $year);
+//        }
+//
+//        $posts = $posts->get();
+
+        $posts = Post::latest()
+            ->filter(\request(['month', 'year']))
+            ->get();
+
+        $archives = Post::selectRaw('year(created_at) year, monthname(created_at) month, count(*) published')
+            ->groupBy('year', 'month')
+            ->orderByRaw('min(created_at) desc')
+            ->get();
+
+        return view('pages.main', compact('posts', 'archives'));
     }
 
     //If you want to use this model binding slug name MUST BE THE SAME as Post variable

@@ -34,7 +34,7 @@
             @yield('content')
         </div>
         <aside class="col-md-4 blog-sidebar">
-            @include('pages.includeInMain.sidebar')
+            @include('pages.includeInMain.sidebar', ['archives'=>$archives])
         </aside>
     </div>
 </main>
