@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     public function index()
     {
         //method latest order posts by created_at column
@@ -57,7 +62,15 @@ class PostController extends Controller
 //        ]);
 
         //I think the best(as like Laracasts say)
-        Post::create(\request(['title', 'body']));
+//        Post::create([
+//            'title' => \request('title'),
+//            'body' => \request('body'),
+//            'user_id' => auth()->id()
+//        ]);
+
+        auth()->user()->publish(
+            new Post(\request(['title', 'body']))
+        );
 
         return redirect('/');
     }
